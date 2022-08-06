@@ -6,7 +6,7 @@ namespace CPW219_eCommerceSite.Data
     public class VideoGameContext : DbContext
     {
         // constructor
-        public VideoFameContext(DbContextOptions<VideoGameContext> options) : base(options)
+        public VideoGameContext(DbContextOptions<VideoGameContext> options) : base(options)
         {
 
         }
