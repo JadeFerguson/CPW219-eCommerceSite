@@ -2,6 +2,7 @@
 using CPW219_eCommerceSite.Data;
 using CPW219_eCommerceSite.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CPW219_eCommerceSite.Controllers
 {  
@@ -15,6 +16,20 @@ namespace CPW219_eCommerceSite.Controllers
         {
             _context = context;
         }
+        
+        public async Task<IActionResult> Index()
+        {
+            // Get all games from the DB Method syntax
+            //List<Game> games = _context.Games.ToList();
+
+            // query syntax
+            List<Game> games = await (from game in _context.Games
+                                      select game).ToListAsync();
+
+            // Show them on the page
+            return View(games);
+
+        }
 
         [HttpGet]
         // To add razor view right click on create then will show up
@@ -23,6 +38,7 @@ namespace CPW219_eCommerceSite.Controllers
             
             return View();
         }
+
 
         [HttpPost]
         //await and async added keywords make more efficient for traffic
