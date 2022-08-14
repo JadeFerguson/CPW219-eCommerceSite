@@ -25,13 +25,15 @@ namespace CPW219_eCommerceSite.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Game game)
+        //await and async added keywords make more efficient for traffic
+        // https://docs.microsoft.com/en-us/aspnet/mvc/overview/performance/using-asynchronous-methods-in-aspnet-mvc-4
+        public async Task<IActionResult> Create(Game game)
         {
             if (ModelState.IsValid)
             {
                 // Add game to DB
                 _context.Games.Add(game); // Prepares insert
-                _context.SaveChanges(); // Executes pending insert
+                await _context.SaveChangesAsync(); // Executes pending insert
 
                 // Show success message on page
                 ViewData["Message"] = $"{game.Title} was added successfully";
