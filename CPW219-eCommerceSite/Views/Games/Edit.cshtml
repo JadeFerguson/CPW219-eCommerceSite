@@ -1,0 +1,44 @@
+﻿@model Game
+
+@{                      @*added this so we know what we are editing*@
+    ViewData["Title"] = "Edit " + Model.Title;
+}
+
+@*Added this so it can put game*@
+<h1>Edit @Model.Title</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @*keep game id and not show it to the user just incase there is two of the same game
+                a hidden is not viable on the form. got rid of whole div that had GameId
+            *@
+            <input type="hidden" asp-for="GameId" />
+
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
