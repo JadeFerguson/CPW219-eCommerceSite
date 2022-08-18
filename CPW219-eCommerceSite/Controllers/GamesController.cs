@@ -88,5 +88,34 @@ namespace CPW219_eCommerceSite.Controllers
             return View(gameModel);
         }
 
+        public async Task<IActionResult> Delete(int id)
+        {
+            // find game by id
+            Game? gameToDelete = await _context.Games.FindAsync(id);
+
+            if (gameToDelete == null)
+            {
+                return NotFound();
+            }
+            return View(gameToDelete);
+        }
+
+        // so when post it's like posting to a method called post so c# doestn yell at us
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            Game gameToDelete = await _context.Games.FindAsync(id);
+
+            if (gameToDelete != null)
+            {
+                _context.Games.Remove(gameToDelete);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = gameToDelete.Title + " was deleted successfully";
+                return RedirectToAction("index");
+            }
+            TempData["Message"] = "This game was already deleted";
+            return RedirectToAction("Index");
+            
+        }
     }
 }
