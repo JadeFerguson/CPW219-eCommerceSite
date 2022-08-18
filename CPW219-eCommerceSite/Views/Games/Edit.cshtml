@@ -16,7 +16,7 @@
             @*keep game id and not show it to the user just incase there is two of the same game
                 a hidden is not viable on the form. got rid of whole div that had GameId
             *@
-            <input type="hidden" asp-action="GameId" />
+            <input type="hidden" asp-for="GameId" />
 
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
