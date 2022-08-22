@@ -11,5 +11,8 @@ namespace CPW219_eCommerceSite.Data
 
         }
         public DbSet<Game> Games { get; set; }
+
+        // If want to add to the database you have to add it as a property as a Dbset in the database
+        public DbSet<Member> Members { get; set; }
     }
 }
