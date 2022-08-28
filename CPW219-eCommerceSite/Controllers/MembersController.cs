@@ -51,6 +51,9 @@ namespace CPW219_eCommerceSite.Controllers
             return View();
         }
 
+        // be careful when searching for information
+        // asp.net state meanagement is important to knowa
+        // 
         [HttpPost]
         public IActionResult Login(LoginViewModel loginModel)
         {
@@ -66,6 +69,8 @@ namespace CPW219_eCommerceSite.Controllers
                 // If exists, send to homepage
                 if (mLogin != null)
                 {
+                    // sets the session
+                    HttpContext.Session.SetString("Email", loginModel.Email);
                     return RedirectToAction("Index", "Home");
                 }
 
