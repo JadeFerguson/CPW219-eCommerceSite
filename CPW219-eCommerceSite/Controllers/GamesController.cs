@@ -17,14 +17,20 @@ namespace CPW219_eCommerceSite.Controllers
             _context = context;
         }
         
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id) // int id has to do with mapping
         {
-            // Get all games from the DB Method syntax
-            //List<Game> games = _context.Games.ToList();
+            const int NumGamesToDisplayPerPage = 3;
+            const int PageOffSet = 1; // Need a page offset to use current page and figure out, nums game to skip
+
+            // Set currPage to id if it has a value, otherwise use 1
+            int currPage = id ?? 1; // sort cut way of writing of id id.hasvalue then currPage == id.value
 
             // query syntax
             List<Game> games = await (from game in _context.Games
-                                      select game).ToListAsync();
+                                      select game)
+                                      .Skip(NumGamesToDisplayPerPage * (currPage - PageOffSet))
+                                      .Take(NumGamesToDisplayPerPage)
+                                      .ToListAsync();
 
             // Show them on the page
             return View(games);
