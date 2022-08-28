@@ -9,7 +9,7 @@ namespace CPW219_eCommerceSite.Models
 
         public string Email { get; set; } = null!;
 
-        public string Password { get; set; } = null;
+        public string Password { get; set; } = null!;
 
         public string? Phone { get; set; }
 
@@ -42,4 +42,16 @@ namespace CPW219_eCommerceSite.Models
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
     }
+
+    public class LoginViewModel
+    {
+        // makes it so it is required
+        [Required]
+        public string Email { get; set; } = null!;
+
+        [Required]
+        [DataType(DataType.Password)] // by deafualt the type will be password
+        public string Password { get; set; } = null!; // null forgiving operator know its supposed to not be null but just setting here
+    }
+
 }
