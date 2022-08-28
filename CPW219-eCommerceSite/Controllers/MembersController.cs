@@ -37,12 +37,62 @@ namespace CPW219_eCommerceSite.Controllers
                 _context.Members.Add(newMember);
                await  _context.SaveChangesAsync();
 
+                // when register it logs in user
+                LogUserIn(newMember.Email);
+
                 // REdirect to home page
                 //index of the home controller
                 return RedirectToAction("Index", "Home");
 
             }
             return View(regmModel);
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // be careful when searching for information
+        // asp.net state meanagement is important to knowa
+        // 
+        [HttpPost]
+        public IActionResult Login(LoginViewModel loginModel)
+        {
+            if (ModelState.IsValid)
+            {
+                // Check DB for credentials
+                // member? because the member might not be in there
+                Member? mLogin = (from member in _context.Members
+                                where member.Email == loginModel.Email &&
+                                    member.Password == loginModel.Password
+                                select member).SingleOrDefault();
+
+                // If exists, send to homepage
+                if (mLogin != null)
+                {
+                    // sets the session
+                    LogUserIn(loginModel.Email);
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError(string.Empty, "Credentials not found");
+
+            }
+            // Return page if no record found, or ModelState is invalid
+            return View(loginModel);
+        }
+
+        private void LogUserIn(string email)
+        {
+            HttpContext.Session.SetString("Email", email);
+        }
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
