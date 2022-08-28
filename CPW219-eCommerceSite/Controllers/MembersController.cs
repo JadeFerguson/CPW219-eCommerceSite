@@ -44,5 +44,36 @@ namespace CPW219_eCommerceSite.Controllers
             }
             return View(regmModel);
         }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(LoginViewModel loginModel)
+        {
+            if (ModelState.IsValid)
+            {
+                // Check DB for credentials
+                // member? because the member might not be in there
+                Member? mLogin = (from member in _context.Members
+                                where member.Email == loginModel.Email &&
+                                    member.Password == loginModel.Password
+                                select member).SingleOrDefault();
+
+                // If exists, send to homepage
+                if (mLogin != null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError(string.Empty, "Credentials not found");
+
+            }
+            // Return page if no record found, or ModelState is invalid
+            return View(loginModel);
+        }
     }
 }
